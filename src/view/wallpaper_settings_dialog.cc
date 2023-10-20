@@ -86,7 +86,7 @@ void WallpaperSettingsDialog::setFor(int desktop, int screen) {
 
 void WallpaperSettingsDialog::populateDesktopList() {
   ui->desktop->clear();
-  for (int desktop = 1; desktop <= KWindowSystem::numberOfDesktops();
+  for (int desktop = 1; desktop <= KX11Extras::numberOfDesktops();
        ++desktop) {
     ui->desktop->addItem(QString::number(desktop));
   }

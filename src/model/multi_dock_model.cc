@@ -293,7 +293,7 @@ bool MultiDockModel::convertConfig() {
 
   KConfigGroup singleDockPager(&singleDockConfig, kPagerCategory);
   KConfigGroup appearancePager(&appearanceConfig, kPagerCategory);
-  const int numDesktops = KWindowSystem::numberOfDesktops();
+  const int numDesktops = KX11Extras::numberOfDesktops();
   for (int desktop = 1; desktop <= numDesktops; ++desktop) {
     copyEntry(ConfigHelper::wallpaperConfigKey(desktop, 0 /* screen */),
               singleDockPager, &appearancePager);

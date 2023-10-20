@@ -81,7 +81,7 @@ DockPanel::DockPanel(MultiDockView* parent, MultiDockModel* model, int dockId)
       animationTimer_(std::make_unique<QTimer>(this)) {
   setAttribute(Qt::WA_TranslucentBackground);
   KWindowSystem::setType(winId(), NET::Dock);
-  KWindowSystem::setOnAllDesktops(winId(), true);
+  KX11Extras::setOnAllDesktops(winId(), true);
   setMouseTracking(true);
   createMenu();
   loadDockConfig();
@@ -139,7 +139,7 @@ void DockPanel::resize(int w, int h) {
   // This is to fix the bug that if launched from Plasma Quicklaunch,
   // KSmoothDock still doesn't show on all desktops even though
   // we've already called this in the constructor.
-  KWindowSystem::setOnAllDesktops(winId(), true);
+  KX11Extras::setOnAllDesktops(winId(), true);
   isResizing_ = false;
 }
 
@@ -277,36 +277,36 @@ void DockPanel::showOnlineDocumentation() {
 
 void DockPanel::about() {
   aboutDialog_.show();
-  KWindowSystem::forceActiveWindow(aboutDialog_.winId());
+  KX11Extras::forceActiveWindow(aboutDialog_.winId());
 }
 
 void DockPanel::showAppearanceSettingsDialog() {
   appearanceSettingsDialog_.reload();
   appearanceSettingsDialog_.show();
-  KWindowSystem::forceActiveWindow(appearanceSettingsDialog_.winId());
+  KX11Extras::forceActiveWindow(appearanceSettingsDialog_.winId());
 }
 
 void DockPanel::showEditLaunchersDialog() {
   editLaunchersDialog_.reload();
   editLaunchersDialog_.show();
-  KWindowSystem::forceActiveWindow(editLaunchersDialog_.winId());
+  KX11Extras::forceActiveWindow(editLaunchersDialog_.winId());
 }
 
 void DockPanel::showApplicationMenuSettingsDialog() {
   applicationMenuSettingsDialog_.reload();
   applicationMenuSettingsDialog_.show();
-  KWindowSystem::forceActiveWindow(applicationMenuSettingsDialog_.winId());
+  KX11Extras::forceActiveWindow(applicationMenuSettingsDialog_.winId());
 }
 
 void DockPanel::showWallpaperSettingsDialog(int desktop) {
   wallpaperSettingsDialog_.setFor(desktop, screen_);
   wallpaperSettingsDialog_.show();
-  KWindowSystem::forceActiveWindow(wallpaperSettingsDialog_.winId());
+  KX11Extras::forceActiveWindow(wallpaperSettingsDialog_.winId());
 }
 
 void DockPanel::showTaskManagerSettingsDialog() {
   taskManagerSettingsDialog_.show();
-  KWindowSystem::forceActiveWindow(taskManagerSettingsDialog_.winId());
+  KX11Extras::forceActiveWindow(taskManagerSettingsDialog_.winId());
 }
 
 void DockPanel::addDock() {
@@ -680,7 +680,7 @@ void DockPanel::initLaunchers() {
 
 void DockPanel::initPager() {
   if (showPager_) {
-    for (int desktop = 1; desktop <= KWindowSystem::numberOfDesktops();
+    for (int desktop = 1; desktop <= KX11Extras::numberOfDesktops();
          ++desktop) {
       items_.push_back(std::make_unique<DesktopSelector>(
           this, model_, orientation_, minSize_, maxSize_, desktop, screen_));
@@ -1046,7 +1046,7 @@ void DockPanel::resizeTaskManager() {
   }
 
   const int itemsToKeep = (showApplicationMenu_ ? 1 : 0) +
-      (showPager_ ? KWindowSystem::numberOfDesktops() : 0);
+      (showPager_ ? KX11Extras::numberOfDesktops() : 0);
   int left = 0;
   int top = 0;
   for (int i = 0; i < itemCount(); ++i) {
@@ -1121,19 +1121,19 @@ void DockPanel::setStrut(int width) {
   // screen.
   if (screen_ == 0) {
     if (position_ == PanelPosition::Top) {
-      KWindowSystem::setStrut(winId(), 0, 0, width, 0);
+      KX11Extras::setStrut(winId(), 0, 0, width, 0);
     } else if (position_ == PanelPosition::Bottom) {
-      KWindowSystem::setStrut(winId(), 0, 0, 0, width);
+      KX11Extras::setStrut(winId(), 0, 0, 0, width);
     } else if (position_ == PanelPosition::Left) {
-      KWindowSystem::setStrut(winId(), width, 0, 0, 0);
+      KX11Extras::setStrut(winId(), width, 0, 0, 0);
     } else {  // Right
-      KWindowSystem::setStrut(winId(), 0, width, 0, 0);
+      KX11Extras::setStrut(winId(), 0, width, 0, 0);
     }
     return;
   }
 
   if (position_ == PanelPosition::Top) {
-    KWindowSystem::setExtendedStrut(
+    KX11Extras::setExtendedStrut(
         winId(),
         0, 0, 0,
         0, 0, 0,
@@ -1142,7 +1142,7 @@ void DockPanel::setStrut(int width) {
         screenGeometry_.x() + screenGeometry_.width(),
         0, 0, 0);
   } else if (position_ == PanelPosition::Bottom) {
-    KWindowSystem::setExtendedStrut(
+    KX11Extras::setExtendedStrut(
         winId(),
         0, 0, 0,
         0, 0, 0,
@@ -1151,7 +1151,7 @@ void DockPanel::setStrut(int width) {
         screenGeometry_.x(),
         screenGeometry_.x() + screenGeometry_.width());
   } else if (position_ == PanelPosition::Left) {
-    KWindowSystem::setExtendedStrut(
+    KX11Extras::setExtendedStrut(
         winId(),
         width,
         screenGeometry_.y(),
@@ -1160,7 +1160,7 @@ void DockPanel::setStrut(int width) {
         0, 0, 0,
         0, 0, 0);
   } else {  // Right
-    KWindowSystem::setExtendedStrut(
+    KX11Extras::setExtendedStrut(
         winId(),
         0, 0, 0,
         width,
@@ -1188,7 +1188,7 @@ void DockPanel::showTooltip(int x, int y) {
   } else {
     showTooltip(i);
     // Somehow we have to set this property again when re-showing.
-    KWindowSystem::setOnAllDesktops(tooltip_.winId(), true);
+    KX11Extras::setOnAllDesktops(tooltip_.winId(), true);
   }
 }
 

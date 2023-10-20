@@ -201,7 +201,7 @@ class DockPanel : public QWidget {
   }
 
   int pagerItemCount() const {
-    return showPager_ ? KWindowSystem::numberOfDesktops() : 0;
+    return showPager_ ? KX11Extras::numberOfDesktops() : 0;
   }
 
   int clockItemCount() const {
